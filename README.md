@@ -8,13 +8,27 @@ This project can help improve your intuition on the way a two-dimensional FFT wo
 
 # Getting Started
 
-This app was written in Python using `numpy` for computation, `Pillow` for reading images and `matplotlib` for visualisation. Although it uses Python 3.8, other versions will likely also work, however this was not tested.
+This app was written in Python using `numpy` for computation, `OpenCV` for reading images and `matplotlib` for visualisation. It was tested with Python 3.9 on MacOS and a project file has been generated so that the installation of all needed packages can be done with
 
-To get started, get the aforementioned dependencies and copy the `app.py` file to your computer. At the top of the `app.py` file there are multiple constants that you can change in order to customise the visualisation.
+```shell
+# to create a virtual environment use
+python -m venv .venv
+
+# then activate the environment
+# For Windows use
+.venv\Scripts\Activate.ps1
+# For Linux and Mac OS
+source .venv/bin/activate
+
+# install all needed modules with
+pip install .
+```
+
+The whole application is implemented in one file `app.py`. At the top of the `app.py` file there are multiple constants that you can change in order to customise the visualisation.
 
 To select the input image, edit the `INPUT_IMAGE_PATH` variable. The target image should ideally be square, otherwise it will be distorted when resizing to the desired resolution (`IMAGE_SIZE`).
 
-After setting the input path you can simply execute the app. By clicking anywhere on the screen, pressing the space key or the right arrow key it advances to the next step, adding another sinusoid to the image.
+After setting the input path you can simply execute the app. By pressing the space key or the right arrow key it advances to the next step, adding another sinusoid to the image. By clicking somewhere on the FFT image, you can select a specific frequency that is illustrated below.
 
 ![](docs/app.png)
 
@@ -32,6 +46,10 @@ The same underlying idea is also true for a two-dimensional Fourier transform: I
 | --------------------------------- | ------------------------------- | ------------------------------- |
 
 By overlapping many 2D sinusoids, as visualised in the app, you finally receive the original image. To know which amplitude and phase is required for each sinusoidal component, you can compute the FFT of the image. The resulting amplitude spectrum is shown in the top right corner of the app. Although phase information is essential, this app chooses to only show the amplitude spectrum to help build an intuitive foundation.
+
+# Acknowledgements
+
+This app has been developed by GitHub user inspiaaa and only extended for interactive choice of frequencies by me (Uwe Hahne). I also changed the code to use PyQt5 as aggregator for `matplotlib`.
 
 
 
