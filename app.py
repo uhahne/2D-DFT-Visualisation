@@ -5,7 +5,7 @@ import math
 import cv2
 matplotlib.use('Qt5Agg')
 
-INPUT_IMAGE_PATH = "input/stop.jpg"
+INPUT_IMAGE_PATH = "input/Chessboard.jpg"
 
 # Resizes the input image to the target square size. Non-square images will be distorted.
 IMAGE_SIZE = 256
@@ -98,7 +98,10 @@ class Animator:
         print(step)
 
         x, y = self.frequencies_to_draw[step]
+        self.drawAt(x,y)
 
+
+    def drawAt(self,x,y):
         # For real inputs (i.e. all images), the spectrum is conjugate symmetric.
         # When the complex sinusoid is added to its complex conjugate, the imaginary components equal out
         # and only the real component is left (with twice the amplitude).
@@ -152,6 +155,11 @@ class Animator:
         self.highlight_circle.set_center((img_x, img_y))
         self.highlight_circle_small.set_center((img_x, img_y))
 
+    def get_fft_image_coords(self, img_x, img_y):
+        x = (math.ceil(img_x) - self.size // 2) 
+        y = (math.ceil(img_y) - self.size // 2) 
+        return x, y
+
 
 image = cv2.imread(INPUT_IMAGE_PATH, cv2.IMREAD_GRAYSCALE)
 
@@ -187,7 +195,14 @@ def draw_next_step():
 
 def on_click(event):
     if event.button == 1:
-        draw_next_step()
+        # draw_next_step()
+        # draw frequency image at mouse position
+        print(event.xdata, event.ydata)
+        xl,yl = animator.get_fft_image_coords(event.xdata, event.ydata)
+        print(xl, yl)
+        animator.drawAt(xl, yl)
+        plt.draw()
+        
 
 
 def on_key(event):
