@@ -1,8 +1,9 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from PIL import Image
+import matplotlib
 import math
-
+import cv2
+matplotlib.use('Qt5Agg')
 
 INPUT_IMAGE_PATH = "input/stop.jpg"
 
@@ -54,11 +55,11 @@ class Animator:
         self.size = len(fft)
 
         # The image that is created iteratively.
-        self.image = np.zeros((self.size, self.size), dtype=np.float)
+        self.image = np.zeros((self.size, self.size), dtype=np.float32)
         self.image_imshow = image_ax.imshow(self.image, cmap="gray", vmin=0, vmax=255)
 
         # Each layer that is added to the image.
-        self.layer_imshow = layer_ax.imshow(np.zeros((self.size, self.size), dtype=np.float), cmap="gray")
+        self.layer_imshow = layer_ax.imshow(np.zeros((self.size, self.size), dtype=np.float32), cmap="gray")
 
         # The FFT.
         self.normalized_fft_image = np.log10(np.abs(self.fft) + 1)
@@ -152,11 +153,9 @@ class Animator:
         self.highlight_circle_small.set_center((img_x, img_y))
 
 
-image = Image.open(INPUT_IMAGE_PATH)
+image = cv2.imread(INPUT_IMAGE_PATH, cv2.IMREAD_GRAYSCALE)
 
-# Convert to greyscale.
-image = image.convert("L")
-image = image.resize((IMAGE_SIZE, IMAGE_SIZE))
+image = cv2.resize(image,(IMAGE_SIZE, IMAGE_SIZE))
 
 image_data = np.array(image)
 image_fft = np.fft.fft2(image_data)
@@ -200,7 +199,7 @@ fig.canvas.mpl_connect("button_press_event", on_click)
 fig.canvas.mpl_connect("key_press_event", on_key)
 
 fig.suptitle("Click / Space / Right Arrow for next step")
-fig.canvas.set_window_title("2D FFT Visualisation")
+fig.canvas.manager.set_window_title("2D FFT Visualisation")
 
 draw_next_step()
 
