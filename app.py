@@ -4,8 +4,11 @@ import matplotlib
 import math
 import cv2
 matplotlib.use('Qt5Agg')
+import tkinter as tk
+import tkinter.filedialog as fd
 
-INPUT_IMAGE_PATH = "input/Chessboard.jpg"
+#INPUT_IMAGE_PATH = "input/Chessboard.jpg"
+INPUT_IMAGE_PATH = "input/Bumbu_Rawon.jpg"
 
 # Resizes the input image to the target square size. Non-square images will be distorted.
 IMAGE_SIZE = 256
@@ -95,7 +98,7 @@ class Animator:
             print("Finished")
             return
 
-        print(step)
+        #print(step)
 
         x, y = self.frequencies_to_draw[step]
         self.drawAt(x,y)
@@ -208,6 +211,11 @@ def on_click(event):
 def on_key(event):
     if event.key == "right" or event.key == " ":
         draw_next_step()
+    
+    if event.key == "x":
+        for i in range(10):
+            draw_next_step()
+    
 
 
 fig.canvas.mpl_connect("button_press_event", on_click)
