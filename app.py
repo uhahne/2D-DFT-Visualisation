@@ -7,8 +7,8 @@ matplotlib.use('Qt5Agg')
 import tkinter as tk
 import tkinter.filedialog as fd
 
-#INPUT_IMAGE_PATH = "input/Chessboard.jpg"
-INPUT_IMAGE_PATH = "input/Bumbu_Rawon.jpg"
+INPUT_IMAGE_PATH = "input/Chessboard.jpg"
+#INPUT_IMAGE_PATH = "input/stop.jpg"
 
 # Resizes the input image to the target square size. Non-square images will be distorted.
 IMAGE_SIZE = 256
@@ -38,8 +38,11 @@ ORDER_BY_EUCLIDEAN_DIST = lambda pos: pos[0] ** 2 + pos[1] ** 2
 #     The Chebyshev distance is slightly modified in order to mostly follow a perimeter tracing path.
 ORDER_BY_CHEBYSHEV_DIST = lambda pos: max(abs(pos[0]), abs(pos[1]) + (0.1 if pos[1] > 0 else 0))
 
+# ... by decreasing frequency amplitude.
+ORDER_BY_AMPLITUDE = lambda pos: np.abs(image_fft[pos[1], pos[0]])
+
 # Determines the traversal order (either ORDER_BY_EUCLIDEAN_DIST or ORDER_BY_CHEBYSHEV_DIST or custom).
-SINUSOID_DRAW_ORDER = ORDER_BY_CHEBYSHEV_DIST
+SINUSOID_DRAW_ORDER = ORDER_BY_AMPLITUDE
 
 
 def compute_2d_complex_sinusoid(size, freq_x, freq_y, coefficient):
@@ -91,8 +94,8 @@ class Animator:
         # The order of the sinusoids to draw.
         frequency_count = math.ceil(self.size / 2)
         self.frequencies_to_draw = [(x, y - frequency_count) for x in range(frequency_count) for y in range(self.size)]
-        self.frequencies_to_draw.sort(key=SINUSOID_DRAW_ORDER)
-
+        self.frequencies_to_draw.sort(key=SINUSOID_DRAW_ORDER, reverse=SINUSOID_DRAW_ORDER == ORDER_BY_AMPLITUDE)
+        
     def animate(self, step):
         if step >= len(self.frequencies_to_draw):
             print("Finished")
