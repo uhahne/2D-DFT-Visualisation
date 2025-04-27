@@ -7,8 +7,10 @@ matplotlib.use('Qt5Agg')
 import tkinter as tk
 import tkinter.filedialog as fd
 
-INPUT_IMAGE_PATH = "input/Chessboard.jpg"
-#INPUT_IMAGE_PATH = "input/stop.jpg"
+INPUT_IMAGE_PATH = "input/stop.jpg"
+# Alternative images: 
+# INPUT_IMAGE_PATH = "input/Chessboard.jpg"
+
 
 # Resizes the input image to the target square size. Non-square images will be distorted.
 IMAGE_SIZE = 256
@@ -104,10 +106,10 @@ class Animator:
         #print(step)
 
         x, y = self.frequencies_to_draw[step]
-        self.drawAt(x,y)
+        self.draw_at(x,y)
 
 
-    def drawAt(self,x,y):
+    def draw_at(self,x,y):
         # For real inputs (i.e. all images), the spectrum is conjugate symmetric.
         # When the complex sinusoid is added to its complex conjugate, the imaginary components equal out
         # and only the real component is left (with twice the amplitude).
@@ -206,7 +208,7 @@ def on_click(event):
         print(event.xdata, event.ydata)
         xl,yl = animator.get_fft_image_coords(event.xdata, event.ydata)
         print(xl, yl)
-        animator.drawAt(xl, yl)
+        animator.draw_at(xl, yl)
         plt.draw()
         
 
@@ -216,7 +218,8 @@ def on_key(event):
         draw_next_step()
     
     if event.key == "x":
-        for i in range(10):
+        # draw 10 steps at once
+        for _ in range(10):
             draw_next_step()
     
 
